@@ -1,0 +1,158 @@
+
+package arraylist;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Principal {
+
+    public static void main(String[] args) {
+         Scanner leer = new Scanner(System.in);
+       ArrayList<Integer> numeros=new ArrayList<>();
+        ArrayList<Integer> negativos=new ArrayList<>();
+         ArrayList<Integer>positivos=new ArrayList<>();
+                          
+        rellenarList(numeros);
+        int menu = 1;
+        do {
+            System.out.println("1-Visualizar \n 2-Numeros negativos \n 3-Clasificar numeros \n 4-Eliminar repetidos \n 5-Desordenar lista \n 6-La moda de la lista \n 7-Puntuaciones");
+            menu = leer.nextInt();
+            switch(menu) {
+                case 1: 
+                    visualizarList(numeros);
+                break;
+                
+                case 2:
+                    eliminarNegativo(numeros);
+                    visualizarList(numeros);
+                break;
+                
+                case 3:
+                    clasificarNumeros(numeros,negativos,positivos);
+                break;
+                
+                case 4:
+                    eliminarRepetidos(numeros);
+                break;
+                
+                case 5:
+                    desordenarLista(numeros);
+                break;
+                
+                case 6:
+                    modaLista(numeros);
+                break;
+                
+                case 7:
+                    puntuacionesTrampolin();
+                break;
+            }
+        } while (menu > 0);
+    }
+     private static void rellenarList(ArrayList<Integer> numeros) {
+ 
+        int t, num;
+        int pos = 0;
+        for (int i = 0; i < 50; i++) {
+            t = (int)(Math.random()*2);
+            num = (int)(Math.random()*101);
+            if (t==0) numeros.add(num*(-1));
+            else numeros.add(num);
+        }
+
+    }
+     private static void visualizarList(ArrayList<Integer> numeros) {
+    //     System.out.println(numeros.toString());
+        for (Integer num:numeros) {
+            System.out.print(num + "\t");
+        }
+    }
+     private static void eliminarNegativo(ArrayList<Integer> numeros) {
+
+        for (int i = 0; i < numeros.size(); i++) {
+            if (numeros.get(i) < 0 ) {
+                numeros.remove(i);
+                i--;
+            }
+        }
+    }
+      private static void clasificarNumeros(ArrayList<Integer> numeros, ArrayList<Integer> negativos, ArrayList<Integer> positivos) {
+        for (int i = 0; i < numeros.size(); i++) {
+            if (numeros.get(i)<0) {
+                negativos.add(numeros.get(i));
+            } else positivos.add(numeros.get(i));
+        }
+        Collections.sort(positivos);
+        Collections.sort(negativos);
+    }
+        private static ArrayList<Integer> eliminarRepetidos(ArrayList<Integer> numeros) {
+        ArrayList<Integer> noRepetidos = new ArrayList<>();
+
+        for (int i = 0; i < numeros.size(); i++) {
+            if (noRepetidos .contains(numeros.get(i)) == false) {
+                noRepetidos .add(numeros.get(i));
+            }
+        }
+        System.out.println("Elementos no repetidos");
+        visualizarList(noRepetidos );
+        return noRepetidos;
+    }
+    private static void desordenarLista(ArrayList<Integer> numeros) {
+       // ArrayList<Integer> duplicado=new ArrayList<>(numeros);
+        ArrayList<Integer> duplicado=(ArrayList<Integer>)numeros.clone();
+        ArrayList<Integer> desordenar = new ArrayList<>();
+        int n = 0;
+       while( duplicado.size()>0 ){
+            n=(int)Math.random()*duplicado.size();
+            desordenar.add(duplicado.get(n));
+            duplicado.remove(n);
+        }
+      // Collections.shuffle(numeros);  equivalente al algoritmo anterior
+        visualizarList(desordenar);
+    }
+    
+    private static void modaLista(ArrayList<Integer> numeros) {
+         ArrayList<Integer> norepetidos =eliminarRepetidos(numeros);
+        int[] moda = new int[norepetidos.size()];
+       
+        int may = 0;
+        
+        for (int i = 0; i < norepetidos.size(); i++) {
+           
+            for (int j = 0; j < numeros.size(); j++) {
+                if (norepetidos.get(i) == numeros.get(j)) {
+                    moda[i]++;
+                }
+            }
+            if (moda[i] > may) {
+                may =moda[i];
+            }
+            
+        }
+        
+        for (int i = 0; i < moda.length; i++) {
+            if(may==moda[i]) System.out.println( "moda: "+norepetidos.get(i)+"  se repite "+may);
+        }
+       
+    }
+     private static void puntuacionesTrampolin() {
+         ArrayList<Double> tramp = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            tramp.add(Math.round(Math.random()*10.1*10)/10.0);
+        }
+     
+        Collections.sort(tramp);
+        System.out.println(tramp.toString());
+        tramp.remove(0);
+        tramp.remove(0);
+        tramp.remove(tramp.size()-1);
+        tramp.remove(tramp.size()-1);
+        double sum=0;
+        System.out.println(tramp.toString());
+        for (int i = 0; i < tramp.size(); i++) {
+            sum+=tramp.get(i);
+        }
+        System.out.println("suma puntos trampolin"+sum);
+    }
+}
